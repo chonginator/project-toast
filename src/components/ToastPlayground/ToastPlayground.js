@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '../Button';
 import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
 
@@ -10,7 +11,7 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState('notice');
-  const [isShown, setIsShown] = React.useState(false);
+  const [toasts, setToasts] = React.useState([]);
 
   return (
     <div className={styles.wrapper}>
@@ -19,13 +20,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {isShown && (
-        <Toast variant={variant} handleDismiss={() => setIsShown(false)}>
-          {message}
-        </Toast>)
-      }
+      <ToastShelf toasts={toasts} />
 
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={handlePopToast}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -67,12 +64,34 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button onClick={() => setIsShown(true)}>Pop Toast!</Button>
+            <Button>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
+
+  function handleDeleteToast(id) {
+    setToasts(currentToasts => currentToasts.filter(toast => toast.props.id !== id));
+  }
+
+  function handleAddToast() {
+    const id = crypto.randomUUID();
+    const newToast = (
+      <Toast id={id} variant={variant} handleDelete={() => handleDeleteToast(id)}>
+        {message}
+      </Toast>
+    );
+
+    setToasts([...toasts, newToast])
+  }
+
+  function handlePopToast(event) {
+    event.preventDefault();
+    handleAddToast();
+    setMessage('');
+    setVariant('notice');
+  }
 }
 
 export default ToastPlayground;
