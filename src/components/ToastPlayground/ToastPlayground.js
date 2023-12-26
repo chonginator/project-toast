@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '../Button';
 import ToastShelf from '../ToastShelf';
 import { ToastContext } from '../ToastProvider';
+// import useKeydown from '../../hooks/useKeydown';
 
 import styles from './ToastPlayground.module.css';
 
@@ -11,7 +12,7 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState('notice');
-  const { toasts, addToast } = React.useContext(ToastContext);
+  const { addToast } = React.useContext(ToastContext);
 
   return (
     <div className={styles.wrapper}>
@@ -20,7 +21,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf toasts={toasts} />
+      <ToastShelf />
 
       <form className={styles.controlsWrapper} onSubmit={handlePopToast}>
         <div className={styles.row}>
