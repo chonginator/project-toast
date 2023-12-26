@@ -18,19 +18,13 @@ function ToastProvider({ children }) {
       id,
       variant,
       message,
-      handleDismiss: () => dismissToast(id)
     });
 
     setToasts([...toasts, newToast])
-  }, [toasts, dismissToast]);
-
-  const dismissAllToasts = React.useCallback(() => {
-    setToasts([]);
-  }, [])
-
+  }, [toasts]);
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, dismissAllToasts }}>
+    <ToastContext.Provider value={{ toasts, addToast, dismissToast }}>
       {children}
     </ToastContext.Provider>
   )
