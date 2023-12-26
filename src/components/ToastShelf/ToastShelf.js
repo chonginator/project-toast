@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { ToastContext } from '../ToastProvider';
-import useKeydown from '../../hooks/useKeydown';
+import Toast from '../Toast';
 
 import styles from './ToastShelf.module.css';
 
 function ToastShelf() {
-  const { toasts, dismissAllToasts } = React.useContext(ToastContext);
-  useKeydown('Escape', dismissAllToasts);
+  const { toasts } = React.useContext(ToastContext);
 
   return (
     <ol
@@ -16,9 +15,9 @@ function ToastShelf() {
       aria-live="polite"
       aria-label="Notification"
     >
-      {toasts.map((toast) => (
-        <li key={toast.props.id} className={styles.toastWrapper}>
-          {toast}
+      {toasts.map(({ id, variant, message, handleDismiss }) => (
+        <li key={id} className={styles.toastWrapper}>
+          <Toast id={id} variant={variant} handleDismiss={handleDismiss}>{message}</Toast>
         </li>
       ))}
     </ol>

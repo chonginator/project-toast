@@ -9,16 +9,17 @@ function ToastProvider({ children }) {
   useKeydown('Escape', () => setToasts([]));
   
   const dismissToast = React.useCallback((id) => {
-    setToasts(currentToasts => currentToasts.filter(toast => toast.props.id !== id));
+    setToasts(currentToasts => currentToasts.filter(toast => toast.id !== id));
   }, []);
 
   const addToast = React.useCallback((variant, message) => {
     const id = crypto.randomUUID();
-    const newToast = (
-      <Toast id={id} variant={variant} handleDismiss={() => dismissToast(id)}>
-        {message}
-      </Toast>
-    );
+    const newToast = ({
+      id,
+      variant,
+      message,
+      handleDismiss: () => dismissToast(id)
+    });
 
     setToasts([...toasts, newToast])
   }, [toasts, dismissToast]);
