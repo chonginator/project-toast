@@ -1,10 +1,12 @@
 import React from 'react';
 import Toast from '../Toast';
+import useKeydown from '../../hooks/useKeydown';
 
 export const ToastContext = React.createContext();
 
 function ToastProvider({ children }) {
   const [toasts, setToasts] = React.useState([]);
+  useKeydown('Escape', () => setToasts([]));
   
   const dismissToast = React.useCallback((id) => {
     setToasts(currentToasts => currentToasts.filter(toast => toast.props.id !== id));
